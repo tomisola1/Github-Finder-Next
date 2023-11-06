@@ -5,6 +5,12 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { ThemeProvider, Typography, createTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
+import { useGlobalContext } from '@/Context/context';
+import { UserProps } from '@/types';
+import { getUser } from '@/utils';
+import { useParams, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 let theme = createTheme({
     palette:{
@@ -20,15 +26,30 @@ theme = createTheme(theme, {
         main: theme.palette.primary.main,
       },
     }
-  });
+});
+
 
 const Profile = () => {
+    const { user, setUser } = useGlobalContext();
+    
+    const {login,  } = user
+    useEffect(() => {
+        const getUserData = async() => {
+          const useR = await getUser(login) 
+          setUser(useR)
+          console.log(user);
+          
+        } 
+        getUserData()
+    }, [login]);
+    
+
   return (
     <div>
         <Navbar/>
         <div className='flex gap-24'>
             <div className='w-[293px] h-[431px] mt-10 ml-14 flex flex-col gap-5'>
-                <Image src={'/assets/image 1.png'} alt='profile-image' width={280} height={280} className='rounded-full'/>
+                <Image src={''} alt='profile-image' width={280} height={280} className='rounded-full'/>
                 <div className='flex flex-col gap-3'>
                     <span className='text-[26px] font-semibold'>Dan Abramov</span>
                     <span className='text-[#0064EB] text-lg font-light'>gaearon</span>

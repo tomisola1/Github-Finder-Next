@@ -1,8 +1,10 @@
+import { GlobalContext, useGlobalContext } from '@/Context/context';
 import { getSearchedUser } from '@/utils';
-import { FormEvent, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 
 const SearchUser = () => {
     const [text, setText] = useState('')
+    const { setUsers } = useContext(GlobalContext)
 
     const handleSubmit = async (e:FormEvent) => {
         e.preventDefault();
@@ -10,10 +12,10 @@ const SearchUser = () => {
             alert('Please enter github username')
         }else{
             try {
-                const user = await getSearchedUser(text) 
-                console.log(user);
+                const users = await getSearchedUser(text) 
+                console.log(users);
+                setUsers(users.items)
                 setText('')
-                return user
             } catch (error) {
                 console.log(error);
             }
@@ -27,7 +29,7 @@ const SearchUser = () => {
             type="search" 
             placeholder="Enter Github username" 
             onChange={(e)=> setText(e.target.value)}
-            className="pl-11 w-[500px] rounded h-10" 
+            className="pl-11 pr-5 w-[500px] rounded h-10" 
             />
         </form>
         
