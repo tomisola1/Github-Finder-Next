@@ -1,10 +1,12 @@
 import { GlobalContext, useGlobalContext } from '@/Context/context';
 import { getSearchedUser } from '@/utils';
+import { useRouter } from 'next/router';
 import { FormEvent, useContext, useState } from 'react'
 
 const SearchUser = () => {
     const [text, setText] = useState('')
     const { setUsers } = useContext(GlobalContext)
+    const router = useRouter()
 
     const handleSubmit = async (e:FormEvent) => {
         e.preventDefault();
@@ -18,6 +20,7 @@ const SearchUser = () => {
                 setText('')
             } catch (error) {
                 console.log(error);
+                router.push('/404')
             }
         }
     }

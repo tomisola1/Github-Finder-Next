@@ -19,3 +19,14 @@ export interface UserProps {
     site_admin: boolean,
     score: number
 }
+
+export interface RepoProps {
+    id: number,
+    node_id: string,
+    name: string,
+    full_name: string,
+    private: boolean,
+    owner: UserProps,
+    html_url: string,
+    description: null | string,
+  }

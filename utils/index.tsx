@@ -20,7 +20,16 @@ export const getSearchedUser = async(text:string) => {
     return response.data;
 }
 
-export const getUser = async(text:string) => {
-    const response = await github.get(`/users/${text}`)
+export const getUserAndRepo = async(text:string) => {
+    const [user, repos] = await Promise.all([
+        github.get(`/users/${text}`),
+        github.get(`/users/${text}/repos`),
+      ]);
+    
+    return { user: user.data, repos: repos.data };
+}
+
+export const getUserRepo = async(text:string) => {
+    const response = await github.get(`/users/${text}/repos`)
     return response.data;
 }

@@ -1,10 +1,15 @@
+import { RepoProps } from '@/types'
 import React from 'react'
 
-const RepositoryList = () => {
+interface RepoDetailProps {
+    repo: RepoProps
+}
+
+const RepositoryList = ({repo}:RepoDetailProps) => {
   return (
     <div className='mt-6 px-10 py-6 bg-white rounded shadow-sm w-[877px]'>
-        <h3 className='text-[#0064EB] text-2xl'>react-hot-loader</h3>
-        <p className='mt-4'>Tweak React components in real time. (Deprecated: use Fast Refresh instead).</p>
+        <h3 className='text-[#0064EB] text-2xl'>{repo.name}</h3>
+        <p className='mt-4'>{repo.description}</p>
     </div>
   )
 }
