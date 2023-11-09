@@ -1,17 +1,5 @@
-import { RepoProps, UserProps } from "@/types";
-import { createContext, useContext, Dispatch, SetStateAction, useState } from "react";
-
-
-interface ContextProps {
-    repos: RepoProps[] | [],
-    setRepos: Dispatch<SetStateAction<RepoProps[]>>,
-    user: UserProps | {},
-    setUser: Dispatch<SetStateAction<UserProps>>,
-    users: UserProps[] | [],
-    setUsers: Dispatch<SetStateAction<UserProps[]>>,
-    loading: Boolean,
-    setLoading: Dispatch<SetStateAction<Boolean>>
-}
+import { ContextProps, RepoProps, UserProps } from "@/types";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 
 export const GlobalContext = createContext<ContextProps>({
@@ -25,7 +13,11 @@ export const GlobalContext = createContext<ContextProps>({
     setLoading: () => {}
 })
 
-export const GlobalContextProvider = ({ children }) => {
+interface MyComponentProps {
+    children: ReactNode;
+  }
+
+export const GlobalContextProvider:React.FC<MyComponentProps> = ({ children }) => {
     const [ users, setUsers] = useState<[] | UserProps[]>([]);
     const [ user, setUser] = useState<{} | UserProps>({});
     const [ repos, setRepos] = useState<[] | RepoProps[]>([]);

@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react"
+
 export interface UserProps {
     login: string,
     id: number,
@@ -18,6 +20,17 @@ export interface UserProps {
     type: string,
     site_admin: boolean,
     score: number
+}
+
+export interface ContextProps {
+    repos: RepoProps[] | [],
+    setRepos: Dispatch<SetStateAction<RepoProps[]>>,
+    user: UserProps | {},
+    setUser: Dispatch<SetStateAction<UserProps>>,
+    users: UserProps[] | [],
+    setUsers: Dispatch<SetStateAction<UserProps[]>>,
+    loading: Boolean,
+    setLoading: Dispatch<SetStateAction<Boolean>>
 }
 
 export interface RepoProps {

@@ -8,16 +8,19 @@ const SearchUser = () => {
     const { setUsers } = useContext(GlobalContext)
     const router = useRouter()
 
-    const handleSubmit = async (e:FormEvent) => {
-        e.preventDefault();
+    const handleChange = async (e:React.ChangeEvent<HTMLInputElement>) => {
+        setText(e.target.value)
+
+        
         if (text === ''){
-            alert('Please enter github username')
+            setUsers([]);
         }else{
             try {
                 const users = await getSearchedUser(text) 
                 console.log(users);
                 setUsers(users.items)
                 setText('')
+    
             } catch (error) {
                 console.log(error);
                 router.push('/404')
@@ -27,15 +30,12 @@ const SearchUser = () => {
 
   return (
     <div>
-        <form onSubmit={handleSubmit}>
-            <input 
-            type="search" 
-            placeholder="Enter Github username" 
-            onChange={(e)=> setText(e.target.value)}
-            className="pl-11 pr-5 w-[500px] rounded h-10" 
-            />
-        </form>
-        
+        <input 
+        type="search" 
+        placeholder="Enter Github username" 
+        onChange={handleChange}
+        className="pl-11 pr-5 w-[500px] rounded h-10" 
+        />
     </div>
   )
 }

@@ -2,10 +2,8 @@ import Navbar from '@/components/Navbar'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import UserResults from '@/components/UserResults'
-import { getSearchedUser } from '@/utils'
 import { useRouter } from 'next/navigation'
 import { UserProps } from '@/types'
-import { useEffect, useState } from 'react'
 import { useGlobalContext } from '@/Context/context'
 
 const inter = Inter({subsets: ['latin']})
@@ -15,12 +13,11 @@ export default function Home() {
 
   const router = useRouter()
 
-  
-
   return (
     <>
       <Navbar/>
       <main className={inter.className}>
+        
         {
           users?.length > 0 ? (
               <div className='grid grid-cols-4'>
@@ -36,7 +33,6 @@ export default function Home() {
               <p className='text-2xl text-[#808080] font-light'>Start with searching a GitHub user</p>
             </div>
           )
-          
         } 
       </main>
     </>
