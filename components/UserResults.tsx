@@ -1,7 +1,6 @@
 import { useGlobalContext } from '@/Context/context'
 import { UserProps } from '@/types'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 interface UserResultProps {
@@ -13,12 +12,14 @@ const UserResults = ({user}:UserResultProps) => {
    const router = useRouter()
    const handleClick = () => {
     setUser(user)
-    router.push('/profile')
+    router.push(`users/${user?.login}`)
    }
   return (
-    <div className='mt-6 ml-6 px-10 py-6 bg-white rounded shadow-md w-80 flex'>
-        <Image src={user.avatar_url} alt='user-image' width={40} height={40} className='rounded-full mr-4 '/>
-        <p className='text-[#0064EB] text-2xl' onClick={handleClick}>{user.login}</p>
+    <div onClick={handleClick} className='mt-6 px-10 py-6 bg-white rounded shadow-md w-full md:w-80 flex items-center transition duration-700 ease-in-out'>
+        <div>
+            <Image src={user.avatar_url} alt='user-image' width={40} height={40} className='rounded-full mr-4 w-auto h-auto'/>
+        </div>
+        <p className='text-[#0064EB] text-lg sm:text-2xl'>{user.login}</p>
         
     </div>
   )

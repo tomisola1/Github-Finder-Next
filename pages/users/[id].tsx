@@ -29,11 +29,15 @@ theme = createTheme(theme, {
     }
 });
 
+interface UserDetailProps {
+    userDetail: UserDetailProps
+}
+
 let numberOfRepos = 4
 
 
 const Profile = () => {
-    const { user, users, setUser, repos, setRepos } = useGlobalContext();
+    const { user, users, searched, setUser, setUsers, repos, setRepos } = useGlobalContext();
     const router = useRouter()
     const [page, setPage] = useState(1);
     const [sliceEndValue, setSliceEndValue] = useState(page * numberOfRepos);
@@ -47,25 +51,25 @@ const Profile = () => {
         setSliceEndValue(indexOfLastMovie);
         setSliceStartValue(indexOfFirstMovie);
         setPage(value);
-        window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-        });
       
     };
+
+    useEffect(() => {
+        setUsers([])
+    },[user.login]);
     
     useEffect(() => {
         const getUserData = async() => {
             try {
                 const useR = await getUserAndRepo(user.login) 
                 setUser(useR.user)
+                console.log(useR.user);
                 setRepos(useR.repos) 
             } catch (error) {
                 router.push('/404')
             }
           
-          console.log(user);
+          
           
         } 
         getUserData()
@@ -74,23 +78,20 @@ const Profile = () => {
     const totalRepos = repos.length
     let numberOfPages = Math.ceil(totalRepos / numberOfRepos)
     
-  
-   
-
   return (
     <div>
         <Navbar/>
         {
+          (
              users?.length > 0 ? (
                 <div className='grid grid-cols-4'>
                   {users?.map((user:UserProps)=>(
                   <UserResults key={user.id} user={user}/> 
                   ))}
                 </div>
-            
             ) : (
-                <div className='flex gap-24'>
-                <div className='w-[293px] h-[431px] mt-10 ml-14 flex flex-col gap-5'>
+                <div className='flex flex-col md:flex-row lg:gap-10 px-10 max-lg:gap-8'>
+                <div className='w-[293px] h-[431px] mt-10 lg:ml-10 flex flex-col gap-5'>
                     <Image src={user.avatar_url} alt='profile-image' width={280} height={280} className='rounded-full'/>
                     <div className='flex flex-col gap-3'>
                         <span className='text-[26px] font-semibold'>{user.name}</span>
@@ -98,7 +99,7 @@ const Profile = () => {
                             <span className='text-[#0064EB] text-lg font-light'>{user.login}</span>
                         </Link>
                     </div>
-                    <div className='flex gap-4'>
+                    <div className='flex gap-4 md:flex-col lg:flex-row'>
                         <div className='flex gap-3'>
                             <Image src={"/assets/followers.svg"} alt='followers icon' width={24} height={24}/>
                             <span className='text-base'>{user.followers} followers</span>
@@ -109,7 +110,7 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <div className='mt-10 h-[80vh]'>
+                <div className='md:mt-10 h-[85vh] mb-10'>
                     <h1 className='text-3xl font-semibold'>Repositories({totalRepos})</h1>
                     {repos.slice(sliceStartValue, sliceEndValue).map((repo:RepoProps)=>(
                         <RepositoryList key={repo.id} repo={repo}/>
@@ -129,7 +130,9 @@ const Profile = () => {
                 </div>
             </div> 
             )
-        }
+        )
+      }
+
     </div>
   )
 }
