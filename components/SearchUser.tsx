@@ -5,7 +5,7 @@ import { useContext, useState } from 'react'
 
 const SearchUser = () => {
     const [text, setText] = useState('')
-    const { setUsers, setError, setSearched } = useContext(GlobalContext)
+    const { setUsers, setError, setSearched, setLoading } = useContext(GlobalContext)
     const router = useRouter()
 
     const handleChange = async (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -19,8 +19,10 @@ const SearchUser = () => {
         
         try {
             setSearched(true)
+            setLoading(true)
             const users = await getSearchedUser(myText) 
             setUsers(users.items)
+            setLoading(false)
 
         } catch (error) {
             console.log(error);

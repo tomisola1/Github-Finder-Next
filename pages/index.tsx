@@ -5,12 +5,13 @@ import UserResults from '@/components/UserResults'
 import { useRouter } from 'next/navigation'
 import { UserProps } from '@/types'
 import { useGlobalContext } from '@/Context/context'
+import Loader from '@/components/Loader'
 
 
 const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
-  const { users, searched, } = useGlobalContext();
+  const { users, searched, loading } = useGlobalContext();
 console.log("my search",users)
   const router = useRouter()
 
@@ -19,12 +20,12 @@ console.log("my search",users)
       <Navbar/>
       <main className={`${inter.className} px-10`}>
       {searched ? 
-        
         (
-        
           users?.length > 0 ? (
+            loading ? <Loader/> :
               <div className='grid min-[1400px]:grid-cols-4 md:grid-cols-2 min-[1100px]:grid-cols-3'>
-                {users?.map((user:UserProps)=>(
+                {
+                users?.map((user:UserProps)=>(
                 <UserResults key={user.id} user={user}/> 
                 ))}
               </div>

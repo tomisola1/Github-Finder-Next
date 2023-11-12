@@ -12,6 +12,7 @@ import { RepoProps, UserProps } from '@/types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import UserResults from '@/components/UserResults';
+import Loader from '@/components/Loader';
 
 let theme = createTheme({
     palette:{
@@ -37,7 +38,7 @@ let numberOfRepos = 4
 
 
 const Profile = () => {
-    const { user, users, searched, setUser, setUsers, repos, setRepos } = useGlobalContext();
+    const { user, users, loading, setUser, setUsers, repos, setRepos, setLoading } = useGlobalContext();
     const router = useRouter()
     const [page, setPage] = useState(1);
     const [sliceEndValue, setSliceEndValue] = useState(page * numberOfRepos);
@@ -56,27 +57,26 @@ const Profile = () => {
 
     useEffect(() => {
         setUsers([])
-    },[user.login]);
+    }, [user.login]);
     
     useEffect(() => {
         const getUserData = async() => {
             try {
+                setLoading(true)
                 const useR = await getUserAndRepo(user.login) 
                 setUser(useR.user)
                 console.log(useR.user);
                 setRepos(useR.repos) 
+                setLoading(false)
             } catch (error) {
                 router.push('/404')
             }
-          
-          
-          
         } 
         getUserData()
     }, [user.login]);
 
     const totalRepos = repos.length
-    let numberOfPages = Math.ceil(totalRepos / numberOfRepos)
+    let numberOfPages = Math.ceil(totalRepos / numberOfRepos) 
     
   return (
     <div>
@@ -84,8 +84,10 @@ const Profile = () => {
         {
           (
              users?.length > 0 ? (
+                loading ? <Loader/> :
                 <div className='grid grid-cols-4'>
-                  {users?.map((user:UserProps)=>(
+                  {
+                  users?.map((user:UserProps)=>(
                   <UserResults key={user.id} user={user}/> 
                   ))}
                 </div>
@@ -112,7 +114,8 @@ const Profile = () => {
                 </div>
                 <div className='md:mt-10 h-[85vh] mb-10'>
                     <h1 className='text-3xl font-semibold'>Repositories({totalRepos})</h1>
-                    {repos.slice(sliceStartValue, sliceEndValue).map((repo:RepoProps)=>(
+                    {loading ? <Loader/> :
+                    repos.slice(sliceStartValue, sliceEndValue).map((repo:RepoProps)=>(
                         <RepositoryList key={repo.id} repo={repo}/>
                     ))}
                     
