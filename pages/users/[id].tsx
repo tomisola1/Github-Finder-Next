@@ -38,7 +38,7 @@ let numberOfRepos = 4
 
 
 const Profile = () => {
-    const { user, users, loading, setUser, setUsers, repos, setRepos, setLoading } = useGlobalContext();
+    const { user, users, loading, setUser, setUsers, repos, setRepos, setLoading, text, setText } = useGlobalContext();
     const router = useRouter()
     const [page, setPage] = useState(1);
     const [sliceEndValue, setSliceEndValue] = useState(page * numberOfRepos);
@@ -52,35 +52,42 @@ const Profile = () => {
         setSliceEndValue(indexOfLastMovie);
         setSliceStartValue(indexOfFirstMovie);
         setPage(value);
-      
     };
 
-    useEffect(() => {
+    useEffect(() => { 
         setUsers([])
     }, [user.login]);
     
+    let myUrl;
+    if (typeof window !== "undefined"){
+        myUrl = window.location.pathname
+    }
+    const url = myUrl?.split('/')[2];
+
     useEffect(() => {
         const getUserData = async() => {
+              
             try {
                 setLoading(true)
-                const useR = await getUserAndRepo(user.login) 
+                const useR = await getUserAndRepo(String(url)) 
                 setUser(useR.user)
-                console.log(useR.user);
                 setRepos(useR.repos) 
                 setLoading(false)
+                setText('')
             } catch (error) {
+                console.log(error)
                 router.push('/404')
-            }
+            } 
         } 
         getUserData()
-    }, [user.login]);
+    }, [url]);
 
     const totalRepos = repos.length
     let numberOfPages = Math.ceil(totalRepos / numberOfRepos) 
     
   return (
-    <div>
-        <Navbar/>
+      <div>
+        <Navbar />
         {
           (
              users?.length > 0 ? (
@@ -112,24 +119,32 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <div className='md:mt-10 h-[85vh] mb-10'>
-                    <h1 className='text-3xl font-semibold'>Repositories({totalRepos})</h1>
-                    {loading ? <Loader/> :
-                    repos.slice(sliceStartValue, sliceEndValue).map((repo:RepoProps)=>(
-                        <RepositoryList key={repo.id} repo={repo}/>
-                    ))}
-                    
-                   <ThemeProvider theme={theme}>
-                        <div className='flex items-end justify-end'>
-                            <Typography color={grey[500]}>
-                                {sliceStartValue+1}-{sliceEndValue} of {totalRepos} items
-                            </Typography>
-                            <Stack spacing={2} mt={2}>
-                                <Pagination count={numberOfPages} page={page} shape="rounded" color={'primary'} onChange={handleChange}/>
-                            </Stack>
-                        </div> 
-                   </ThemeProvider>
-                    
+                <div className='md:mt-10 h-[85vh] mb-10 md:w-[70%]'>
+                    {loading ? (<Loader/>) :
+                    repos.length === 0 ?
+                     (<div className='flex flex-col gap-6 justify-center items-center text-center h-[85vh] m-auto'>
+                        <Image src={"/assets/cancel.svg"} alt='cancel icon' width={110} height={110}/>
+                        <p className='text-2xl text-[#808080] font-light'>Repository list is empty</p>
+                     </div> 
+                     ):(
+                     <>
+                        <h1 className='text-3xl font-semibold'>Repositories({totalRepos})</h1>
+                        {repos.slice(sliceStartValue, sliceEndValue).map((repo:RepoProps)=>(
+                            <RepositoryList key={repo.id} repo={repo}/>
+                        ))}
+                        <ThemeProvider theme={theme}>
+                            <div className='flex items-end justify-end'>
+                                <Typography color={grey[500]}>
+                                    {sliceStartValue + 1}-{sliceEndValue} of {totalRepos} items
+                                </Typography>
+                                <Stack spacing={2} mt={2}>
+                                    <Pagination count={numberOfPages} page={page} shape="rounded" color={'primary'} onChange={handleChange}/>
+                                </Stack>
+                            </div> 
+                        </ThemeProvider>
+                     </>
+                   )
+                  }
                 </div>
             </div> 
             )

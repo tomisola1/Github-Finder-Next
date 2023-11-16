@@ -12,8 +12,8 @@ const inter = Inter({subsets: ['latin']})
 
 export default function Home() {
   const { users, searched, loading } = useGlobalContext();
-console.log("my search",users)
   const router = useRouter()
+  
 
   return (
     <>
@@ -38,9 +38,9 @@ console.log("my search",users)
             </div>
           ))
         : <div className='w-60 flex flex-col gap-6 justify-center items-center text-center h-[90vh] m-auto'>
-        <Image src={"/assets/search.svg"} alt='search icon' width={110} height={110}/>
-        <p className='text-2xl text-[#808080] font-light'>Start with searching a GitHub user</p>
-      </div>
+            <Image src={"/assets/search.svg"} alt='search icon' width={110} height={110}/>
+            <p className='text-2xl text-[#808080] font-light'>Start with searching a GitHub user</p>
+          </div>
          }
       </main>
     </>

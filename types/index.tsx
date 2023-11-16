@@ -20,14 +20,19 @@ export interface UserProps {
   type: string;
   site_admin: boolean;
   score: number;
+  name: string;
+  followers: number;
+  following: number;
 }
 
 export interface ContextProps {
+  text: String | "";
+  setText: Dispatch<SetStateAction<String>>;
   error: String | "";
   setError: Dispatch<SetStateAction<String>>;
   repos: RepoProps[] | [];
   setRepos: Dispatch<SetStateAction<RepoProps[]>>;
-  user: UserProps | {};
+  user: UserProps;
   setUser: Dispatch<SetStateAction<UserProps>>;
   users: UserProps[] | [];
   setUsers: Dispatch<SetStateAction<UserProps[]>>;

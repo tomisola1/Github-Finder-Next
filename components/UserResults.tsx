@@ -12,7 +12,17 @@ const UserResults = ({user}:UserResultProps) => {
    const router = useRouter()
    const handleClick = () => {
     setUser(user)
-    router.push(`users/${user?.login}`)
+    
+    let routerUrl = `/users/${user?.login}`
+    let myUrl = window.location.pathname;
+    if(myUrl.includes("/users")){
+        routerUrl = `${user?.login}`
+        router.push(routerUrl)
+    }else {
+        router.push(routerUrl)
+    }
+
+    
    }
   return (
     <div onClick={handleClick} className='mt-6 px-10 py-6 bg-white rounded shadow-md w-full md:w-80 flex items-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 cursor-pointer'>

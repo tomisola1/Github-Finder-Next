@@ -28,8 +28,3 @@ export const getUserAndRepo = async(text:string) => {
     
     return { user: user.data, repos: repos.data };
 }
-
-export const getUserRepo = async(text:string) => {
-    const response = await github.get(`/users/${text}/repos`)
-    return response.data;
-}
