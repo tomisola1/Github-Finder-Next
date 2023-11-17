@@ -130,7 +130,7 @@ const Profile = () => {
                      <>
                         <h1 className='text-3xl font-semibold'>Repositories({totalRepos})</h1>
                         {repos.slice(sliceStartValue, sliceEndValue).map((repo:RepoProps)=>(
-                            <RepositoryList key={repo.id} repo={repo}/>
+                            <RepositoryList key={repo.id} repo={repo} user={user.login}/>
                         ))}
                         <ThemeProvider theme={theme}>
                             <div className='flex items-end justify-end'>

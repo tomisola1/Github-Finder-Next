@@ -1,15 +1,20 @@
-import { RepoProps } from '@/types'
+import { RepoProps, UserProps } from '@/types'
+import Link from 'next/link'
 import React from 'react'
 
-interface RepoDetailProps {
-    repo: RepoProps
+interface Props {
+    repo: RepoProps,
+    user: string
 }
 
-const RepositoryList = ({repo}:RepoDetailProps) => {
+const RepositoryList = ({repo, user}:Props) => {
   return (
     <div className='mt-6 px-10 py-6 bg-white rounded shadow-sm w-full'>
-        <h3 className='text-[#0064EB] text-2xl'>{repo.name}</h3>
+        <Link href={`https://github.com/${user}/${repo.name}`}>
+          <h3 className='text-[#0064EB] text-2xl hover:underline'>{repo.name}</h3>
+        </Link>
         <p className='mt-4'>{repo.description}</p>
+        
     </div>
   )
 }
