@@ -105,7 +105,7 @@ const Profile = () => {
                     <div className='flex flex-col gap-3'>
                         <span className='text-[26px] font-semibold'>{user.name}</span>
                         <Link href={`https://github.com/${user.login}`} target='_blank'>
-                            <span className='text-[#0064EB] text-lg font-light'>{user.login}</span>
+                            <span className='text-[#0064EB] text-lg font-light hover:underline'>{user.login}</span>
                         </Link>
                     </div>
                     <div className='flex gap-4 md:flex-col lg:flex-row'>
